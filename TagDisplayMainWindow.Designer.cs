@@ -35,6 +35,8 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.lvAudioFiles = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.lblProgress = new System.Windows.Forms.Label();
             this.chkSearchSubDirectories = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -69,11 +71,13 @@
             // lvAudioFiles
             // 
             this.lvAudioFiles.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
             this.lvAudioFiles.FullRowSelect = true;
             this.lvAudioFiles.Location = new System.Drawing.Point(13, 86);
             this.lvAudioFiles.Name = "lvAudioFiles";
-            this.lvAudioFiles.Size = new System.Drawing.Size(665, 591);
+            this.lvAudioFiles.Size = new System.Drawing.Size(1209, 591);
             this.lvAudioFiles.TabIndex = 6;
             this.lvAudioFiles.UseCompatibleStateImageBehavior = false;
             this.lvAudioFiles.View = System.Windows.Forms.View.Details;
@@ -83,14 +87,25 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Filename";
-            this.columnHeader1.Width = 600;
+            this.columnHeader1.Width = 575;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Title";
+            this.columnHeader2.Width = 300;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Artist";
+            this.columnHeader3.Width = 300;
             // 
             // lblProgress
             // 
             this.lblProgress.Location = new System.Drawing.Point(16, 680);
             this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(628, 23);
+            this.lblProgress.Size = new System.Drawing.Size(1203, 23);
             this.lblProgress.TabIndex = 0;
+            this.lblProgress.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // chkSearchSubDirectories
             // 
@@ -107,25 +122,25 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(11, 68);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 15);
+            this.label2.Size = new System.Drawing.Size(176, 15);
             this.label2.TabIndex = 5;
-            this.label2.Text = "List of Audio Files";
+            this.label2.Text = "Audio Files in Selected Directory";
             // 
             // TagDisplayMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(699, 741);
+            this.ClientSize = new System.Drawing.Size(1231, 741);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.chkSearchSubDirectories);
-            this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.lvAudioFiles);
             this.Controls.Add(this.btnFolderBrowse);
             this.Controls.Add(this.txtAudioFolder);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblProgress);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TagDisplayMainWindow";
-            this.Text = "Form1";
+            this.Text = "TagDisplay - Displaying Metadata Tags for Audio Files";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -143,5 +158,7 @@
         private ColumnHeader columnHeader1;
         private CheckBox chkSearchSubDirectories;
         private Label label2;
+        private ColumnHeader columnHeader2;
+        private ColumnHeader columnHeader3;
     }
 }

@@ -1,6 +1,7 @@
 
 
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Reflection.Metadata;
@@ -17,13 +18,12 @@ namespace TagDisplay
         private readonly string[] _extension = { "*.mp3", "*.wav", "*.mp2", "*.flac", "*.mp4", "*.ogg",  ".ape"};
         private IEnumerable<string> _songList = new List<string>();
 
-        private delegate void InvokeToListViewDelegate(string filename);
+        private delegate void InvokeToListViewDelegate(string filename, TAG_INFO fileTagInfo);
 
         private delegate void InvokeToProgressBarLabelDelegate(string sText);
 
-        private delegate void InvokeToProgressBarDelegate(int nPercentage);
+        private BackgroundWorker _backgroundWorker = new BackgroundWorker();
 
-        private bool _bInit = false;
 
         public TagDisplayMainWindow()
         {
@@ -47,7 +47,14 @@ namespace TagDisplay
                     return;
                 }
 
-                LoadFilesIntoGrid(_songsDirectory);
+                lvAudioFiles.Enabled = false;
+                txtAudioFolder.Enabled = false;
+                btnFolderBrowse.Enabled = false;
+                chkSearchSubDirectories.Enabled = false;
+
+                Un4seen.Bass.Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, this.Handle);
+
+                _backgroundWorker.RunWorkerAsync();
 
             }
             catch (Exception exception)
@@ -63,48 +70,81 @@ namespace TagDisplay
 
         private string BrowseForFolder(string sExistingDirectory)
         {
-            FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog
+            FolderBrowserDialog browserDialog1 = new FolderBrowserDialog
             {
                 SelectedPath = sExistingDirectory
             };
-            return DialogResult.OK == folderBrowserDialog1.ShowDialog() ? folderBrowserDialog1.SelectedPath : sExistingDirectory;
+            return DialogResult.OK == browserDialog1.ShowDialog() ? browserDialog1.SelectedPath : sExistingDirectory;
         }
 
 
-        private void LoadFilesIntoGrid(string sMusicDirectory)
+        private void LoadFilesIntoListView(string sMusicDirectory)
         {
-
-
             try
             {
                 var nSong = 0;
                 var nAllSongs = _songList.Count();
 
-                //3Tag _DummyID3 = new Id3Tag();
-
                 foreach (var f in _songList)
                 {
-                    InvokeToListView(f);
+                    int handlePtr = Un4seen.Bass.Bass.BASS_StreamCreateFile(f, 0, 0, BASSFlag.BASS_DEFAULT);
+
+                    var tagInfo = new Un4seen.Bass.AddOn.Tags.TAG_INFO(f);
+
+                    BassTags.BASS_TAG_GetFromFile(handlePtr, tagInfo);
+
+                    InvokeToListView(f, tagInfo);
                     InvokeToProgressBarLabel("Reading " + f);
                     nSong++;
                 }
 
-
-                InvokeToProgressBarLabel("Completed");
+                Un4seen.Bass.Bass.BASS_Free();
             }
-            catch (UnauthorizedAccessException UAEx)
+            catch (UnauthorizedAccessException uaEx)
             {
-                MessageBox.Show(UAEx.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(uaEx.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (PathTooLongException PathEx)
+            catch (PathTooLongException pathEx)
             {
-                MessageBox.Show(PathEx.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(pathEx.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            chkSearchSubDirectories.Checked = false;
+
+            _backgroundWorker = new BackgroundWorker
+            {
+                WorkerSupportsCancellation = true
+            };
+
+            _backgroundWorker.DoWork += new DoWorkEventHandler(Bw_DoWork);
+
+            _backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(Bw_RunWorkerCompleted);
+        }
+
+        private void Bw_DoWork(object? sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                InvokeToProgressBarLabel("Starting Loading of Songs, Please Wait...");
+
+                LoadFilesIntoListView(_songsDirectory);
+            }
+            catch (System.Exception ex)
+            {
+                InvokeToProgressBarLabel(ex.ToString());
+            }
+        }
+
+        private void Bw_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
+        {
+            lvAudioFiles.Enabled = true;
+            txtAudioFolder.Enabled = true;
+            btnFolderBrowse.Enabled = true;
+            chkSearchSubDirectories.Enabled = true;
+            InvokeToProgressBarLabel("Loading of Audio Files Completed!");
         }
 
         private void InvokeToProgressBarLabel(string sText)
@@ -118,56 +158,31 @@ namespace TagDisplay
             lblProgress.Text = sText;
         }
 
-        private void InvokeToListView(string filename)
+        private void InvokeToListView(string filename, TAG_INFO fileTagInfo)
         {
             // If it's coming from another thread, Invoke _InvokeToListView trough the _InvokeToListViewDelegate and end this thing.
             if (lvAudioFiles.InvokeRequired)
             {
-                this.Invoke(new InvokeToListViewDelegate(InvokeToListView), filename);
+                this.Invoke(new InvokeToListViewDelegate(InvokeToListView), filename, fileTagInfo);
                 return;
             }
 
-            lvAudioFiles.Items.Add(filename);
-
+            var lvItem = new ListViewItem
+            {
+                Text = filename,
+                Tag = fileTagInfo
+            };
+            lvItem.SubItems.Add(fileTagInfo.title);
+            lvItem.SubItems.Add(fileTagInfo.artist);
+            lvAudioFiles.Items.Add(lvItem);
 
         }
 
         private void lvAudioFiles_DoubleClick(object sender, EventArgs e)
         {
-            ReadMetadataFromFile();
-        }
-
-        private void ReadMetadataFromFile()
-        {
-            try
-            {
-                _bInit = Un4seen.Bass.Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, this.Handle);
-
-                if (_bInit)
-                {
-                    int handlePtr = Un4seen.Bass.Bass.BASS_StreamCreateFile(lvAudioFiles.SelectedItems[0].Text, 0, 0, BASSFlag.BASS_DEFAULT);
-
-                    var tagInfo = new Un4seen.Bass.AddOn.Tags.TAG_INFO(lvAudioFiles.SelectedItems[0].Text);
-                    if (BassTags.BASS_TAG_GetFromFile(handlePtr, tagInfo))
-                    {
-                        var metadataWindow = new MetadataWindow(tagInfo);
-                        metadataWindow.ShowDialog();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Unable to detect metadata tags in file!", "No Tags Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-
-
-                    Un4seen.Bass.Bass.BASS_Free();
-                }
-
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
+            var lvItem = (ListViewItem)lvAudioFiles.SelectedItems[0];
+            var metadataWindow = new MetadataWindow((TAG_INFO)lvItem.Tag);
+            metadataWindow.ShowDialog();
             
         }
 
@@ -175,7 +190,9 @@ namespace TagDisplay
         {
             if (e.KeyChar == (char)Keys.Return)
             {
-                ReadMetadataFromFile();
+                var lvItem = (ListViewItem)lvAudioFiles.SelectedItems[0];
+                var metadataWindow = new MetadataWindow((TAG_INFO)lvItem.Tag);
+                metadataWindow.ShowDialog();
             }
         }
     }

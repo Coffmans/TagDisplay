@@ -82,6 +82,18 @@
             this.label29 = new System.Windows.Forms.Label();
             this.txtEncodedBy = new System.Windows.Forms.TextBox();
             this.label24 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.groupBoxArtwork = new System.Windows.Forms.GroupBox();
+            this.labelArtworkMimeType = new System.Windows.Forms.Label();
+            this.txtArtworkMimeType = new System.Windows.Forms.TextBox();
+            this.labelArtworkDescript = new System.Windows.Forms.Label();
+            this.txtArtworkDescription = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.txtArtworkType = new System.Windows.Forms.TextBox();
+            this.labelArtworkUrl = new System.Windows.Forms.Label();
+            this.txtArtworkUrl = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBoxArtwork.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtComments
@@ -153,7 +165,7 @@
             // 
             this.txtDuration.Location = new System.Drawing.Point(172, 432);
             this.txtDuration.Name = "txtDuration";
-            this.txtDuration.Size = new System.Drawing.Size(80, 23);
+            this.txtDuration.Size = new System.Drawing.Size(71, 23);
             this.txtDuration.TabIndex = 22;
             // 
             // txtCopyRight
@@ -218,19 +230,19 @@
             this.txtNativeTags.Multiline = true;
             this.txtNativeTags.Name = "txtNativeTags";
             this.txtNativeTags.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtNativeTags.Size = new System.Drawing.Size(439, 464);
+            this.txtNativeTags.Size = new System.Drawing.Size(439, 668);
             this.txtNativeTags.TabIndex = 52;
             // 
             // txtYear
             // 
-            this.txtYear.Location = new System.Drawing.Point(311, 432);
+            this.txtYear.Location = new System.Drawing.Point(300, 432);
             this.txtYear.Name = "txtYear";
-            this.txtYear.Size = new System.Drawing.Size(64, 23);
+            this.txtYear.Size = new System.Drawing.Size(75, 23);
             this.txtYear.TabIndex = 26;
             // 
             // txtTrack
             // 
-            this.txtTrack.Location = new System.Drawing.Point(258, 432);
+            this.txtTrack.Location = new System.Drawing.Point(249, 432);
             this.txtTrack.Name = "txtTrack";
             this.txtTrack.Size = new System.Drawing.Size(45, 23);
             this.txtTrack.TabIndex = 24;
@@ -317,7 +329,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(311, 414);
+            this.label9.Location = new System.Drawing.Point(300, 415);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(29, 15);
             this.label9.TabIndex = 25;
@@ -416,7 +428,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(258, 416);
+            this.label20.Location = new System.Drawing.Point(249, 416);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(34, 15);
             this.label20.TabIndex = 23;
@@ -513,11 +525,104 @@
             this.label24.TabIndex = 18;
             this.label24.Text = "Kbps";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pictureBox1.Location = new System.Drawing.Point(6, 22);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(150, 150);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 53;
+            this.pictureBox1.TabStop = false;
+            // 
+            // groupBoxArtwork
+            // 
+            this.groupBoxArtwork.Controls.Add(this.labelArtworkMimeType);
+            this.groupBoxArtwork.Controls.Add(this.txtArtworkMimeType);
+            this.groupBoxArtwork.Controls.Add(this.labelArtworkDescript);
+            this.groupBoxArtwork.Controls.Add(this.txtArtworkDescription);
+            this.groupBoxArtwork.Controls.Add(this.label25);
+            this.groupBoxArtwork.Controls.Add(this.txtArtworkType);
+            this.groupBoxArtwork.Controls.Add(this.labelArtworkUrl);
+            this.groupBoxArtwork.Controls.Add(this.txtArtworkUrl);
+            this.groupBoxArtwork.Controls.Add(this.pictureBox1);
+            this.groupBoxArtwork.Location = new System.Drawing.Point(12, 524);
+            this.groupBoxArtwork.Name = "groupBoxArtwork";
+            this.groupBoxArtwork.Size = new System.Drawing.Size(738, 181);
+            this.groupBoxArtwork.TabIndex = 55;
+            this.groupBoxArtwork.TabStop = false;
+            this.groupBoxArtwork.Text = "Artwork";
+            // 
+            // labelArtworkMimeType
+            // 
+            this.labelArtworkMimeType.AutoSize = true;
+            this.labelArtworkMimeType.Location = new System.Drawing.Point(442, 22);
+            this.labelArtworkMimeType.Name = "labelArtworkMimeType";
+            this.labelArtworkMimeType.Size = new System.Drawing.Size(65, 15);
+            this.labelArtworkMimeType.TabIndex = 61;
+            this.labelArtworkMimeType.Text = "MIME Type";
+            // 
+            // txtArtworkMimeType
+            // 
+            this.txtArtworkMimeType.Location = new System.Drawing.Point(442, 40);
+            this.txtArtworkMimeType.Name = "txtArtworkMimeType";
+            this.txtArtworkMimeType.Size = new System.Drawing.Size(272, 23);
+            this.txtArtworkMimeType.TabIndex = 62;
+            // 
+            // labelArtworkDescript
+            // 
+            this.labelArtworkDescript.AutoSize = true;
+            this.labelArtworkDescript.Location = new System.Drawing.Point(184, 69);
+            this.labelArtworkDescript.Name = "labelArtworkDescript";
+            this.labelArtworkDescript.Size = new System.Drawing.Size(67, 15);
+            this.labelArtworkDescript.TabIndex = 59;
+            this.labelArtworkDescript.Text = "Description";
+            // 
+            // txtArtworkDescription
+            // 
+            this.txtArtworkDescription.Location = new System.Drawing.Point(184, 87);
+            this.txtArtworkDescription.Name = "txtArtworkDescription";
+            this.txtArtworkDescription.Size = new System.Drawing.Size(530, 23);
+            this.txtArtworkDescription.TabIndex = 60;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(184, 22);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(31, 15);
+            this.label25.TabIndex = 57;
+            this.label25.Text = "Type";
+            // 
+            // txtArtworkType
+            // 
+            this.txtArtworkType.Location = new System.Drawing.Point(184, 40);
+            this.txtArtworkType.Name = "txtArtworkType";
+            this.txtArtworkType.Size = new System.Drawing.Size(252, 23);
+            this.txtArtworkType.TabIndex = 58;
+            // 
+            // labelArtworkUrl
+            // 
+            this.labelArtworkUrl.AutoSize = true;
+            this.labelArtworkUrl.Location = new System.Drawing.Point(184, 123);
+            this.labelArtworkUrl.Name = "labelArtworkUrl";
+            this.labelArtworkUrl.Size = new System.Drawing.Size(28, 15);
+            this.labelArtworkUrl.TabIndex = 56;
+            this.labelArtworkUrl.Text = "URL";
+            // 
+            // txtArtworkUrl
+            // 
+            this.txtArtworkUrl.Location = new System.Drawing.Point(184, 141);
+            this.txtArtworkUrl.Name = "txtArtworkUrl";
+            this.txtArtworkUrl.Size = new System.Drawing.Size(530, 23);
+            this.txtArtworkUrl.TabIndex = 56;
+            // 
             // MetadataWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1241, 529);
+            this.ClientSize = new System.Drawing.Size(1220, 760);
+            this.Controls.Add(this.groupBoxArtwork);
             this.Controls.Add(this.label24);
             this.Controls.Add(this.label29);
             this.Controls.Add(this.txtEncodedBy);
@@ -575,6 +680,9 @@
             this.Name = "MetadataWindow";
             this.Text = "Metadata Window";
             this.Load += new System.EventHandler(this.Metadata_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBoxArtwork.ResumeLayout(false);
+            this.groupBoxArtwork.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -635,5 +743,15 @@
         private Label label29;
         private TextBox txtEncodedBy;
         private Label label24;
+        private PictureBox pictureBox1;
+        private GroupBox groupBoxArtwork;
+        private Label label25;
+        private TextBox txtArtworkType;
+        private Label labelArtworkUrl;
+        private TextBox txtArtworkUrl;
+        private Label labelArtworkDescript;
+        private TextBox txtArtworkDescription;
+        private Label labelArtworkMimeType;
+        private TextBox txtArtworkMimeType;
     }
 }
